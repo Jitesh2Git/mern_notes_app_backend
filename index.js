@@ -15,10 +15,19 @@ mongoose.connect(connectionString);
 
 app.use(express.json());
 
+const allowedOrigins = ["*"];
+
 app.use(
   cors({
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: "GET,POST,PUT,DELETE,HEAD,PATCH",
+    allowedHeaders: "Content-Type,Origin,X-Requested-With,Accept,Authorization",
     credentials: true,
   })
 );
