@@ -15,12 +15,14 @@ mongoose.connect(connectionString);
 
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "https://noteease.netlify.app",
-    optionsSuccessStatus: 200,
-  })
-);
+const corsOptions = {
+  origin: "https://noteease.netlify.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
   res.status(200).send("Backend Running.");
