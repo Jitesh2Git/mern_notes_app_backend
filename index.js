@@ -15,21 +15,20 @@ mongoose.connect(connectionString);
 
 app.use(express.json());
 
-// CORS configuration
 const corsOptions = {
-  origin: "https://noteease.netlify.app", // Allow requests from this origin
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed methods
-  allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
-  optionsSuccessStatus: 200, // Some legacy browsers choke on 204
+  origin: "https://noteease.netlify.app",
+  optionsSuccessStatus: 200,
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "Access-Control-Allow-Origin",
+  ],
 };
 
-// Apply CORS middleware globally
 app.use(cors(corsOptions));
 
-// Handle preflight requests globally
 app.options("*", cors(corsOptions));
 
-// Debugging CORS issue
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "https://noteease.netlify.app");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
