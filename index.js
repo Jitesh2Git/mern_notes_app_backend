@@ -15,7 +15,7 @@ mongoose.connect(connectionString);
 
 app.use(express.json());
 
-const allowedOrigins = ["*"];
+const allowedOrigins = ["https://noteease.netlify.app"];
 
 app.use(
   cors({
@@ -26,11 +26,44 @@ app.use(
         callback(new Error("Not allowed by CORS"));
       }
     },
-    methods: "GET,POST,PUT,DELETE,HEAD,PATCH",
-    allowedHeaders: "Content-Type,Origin,X-Requested-With,Accept,Authorization",
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    allowedHeaders: [
+      "Content-Type",
+      "Origin",
+      "X-Requested-With",
+      "Accept",
+      "Authorization",
+    ],
     credentials: true,
   })
 );
+
+// Handle preflight requests
+app.options(
+  "*",
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    allowedHeaders: [
+      "Content-Type",
+      "Origin",
+      "X-Requested-With",
+      "Accept",
+      "Authorization",
+    ],
+    credentials: true,
+  })
+);
+
+app.get("/", (req, res) => {
+  res.status(200).send("Backend Running.");
+});
 
 app.get("/", (req, res) => {
   res.status(200).send("Backend Running.");
