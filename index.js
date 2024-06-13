@@ -17,11 +17,14 @@ app.use(express.json());
 
 app.use(cors({ origin: "*" }));
 
-header("Access-Control-Allow-Origin:*");
-header("Access-Control-Allow-Methods:POST,GET,OPTIONS,PUT,DELETE");
-header(
-  "Access-Control-Allow-Headers:Content-Type,X-Auth-Token,Origin,Authorization"
-);
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin:*");
+  res.header("Access-Control-Allow-Methods:POST,GET,OPTIONS,PUT,DELETE");
+  res.header(
+    "Access-Control-Allow-Headers:Content-Type,X-Auth-Token,Origin,Authorization"
+  );
+  next();
+});
 
 app.get("/", (req, res) => {
   res.status(200).send("Backend Running.");
