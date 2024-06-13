@@ -18,11 +18,6 @@ app.use(express.json());
 const corsOptions = {
   origin: "https://noteease.netlify.app",
   optionsSuccessStatus: 200,
-  allowedHeaders: [
-    "Content-Type",
-    "Authorization",
-    "Access-Control-Allow-Origin",
-  ],
 };
 
 app.use(cors(corsOptions));
@@ -30,9 +25,13 @@ app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://noteease.netlify.app");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  //Enabling CORS
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"
+  );
   next();
 });
 
