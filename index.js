@@ -18,7 +18,6 @@ app.use(express.json());
 app.use(
   cors({
     origin: "https://noteease.netlify.app",
-    credentials: true,
   })
 );
 
