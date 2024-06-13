@@ -18,31 +18,10 @@ app.use(express.json());
 app.use(
   cors({
     origin: "*",
-  })
-);
-
-app.use(
-  cors({
-    origin: "https://noteease.netlify.app", // Allow only this origin
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true, // Allow cookies to be sent
+    credentials: true,
   })
 );
-
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://noteease.netlify.app");
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  next();
-});
-
-app.options("*", (req, res) => {
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  res.sendStatus(200);
-});
 
 app.get("/", (req, res) => {
   res.status(200).send("Backend Running.");
