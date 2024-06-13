@@ -21,6 +21,8 @@ app.use(
   })
 );
 
+app.options("*", cors());
+
 //Create Account
 app.post("/create-account", async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -388,6 +390,8 @@ app.get("/search-notes/", authenticateToken, async (req, res) => {
   }
 });
 
-app.listen(port);
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 module.exports = app;
