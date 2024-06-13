@@ -18,10 +18,11 @@ app.use(express.json());
 app.use(
   cors({
     origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   })
 );
-
-app.options("*", cors());
 
 //Create Account
 app.post("/create-account", async (req, res) => {
