@@ -19,51 +19,31 @@ const allowedOrigins = ["https://noteease.netlify.app"];
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
       }
     },
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-    allowedHeaders: [
-      "Content-Type",
-      "Origin",
-      "X-Requested-With",
-      "Accept",
-      "Authorization",
-    ],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: "Content-Type,Origin,X-Requested-With,Accept,Authorization",
     credentials: true,
   })
 );
 
-// Handle preflight requests
-app.options(
-  "*",
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-    allowedHeaders: [
-      "Content-Type",
-      "Origin",
-      "X-Requested-With",
-      "Accept",
-      "Authorization",
-    ],
-    credentials: true,
-  })
-);
-
-app.get("/", (req, res) => {
-  res.status(200).send("Backend Running.");
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://noteease.netlify.app");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Origin, X-Requested-With, Accept, Authorization"
+  );
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
 });
+
+app.options("*", cors());
 
 app.get("/", (req, res) => {
   res.status(200).send("Backend Running.");
