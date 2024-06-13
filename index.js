@@ -15,7 +15,13 @@ mongoose.connect(connectionString);
 
 app.use(express.json());
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+    "Access-Control-Allow-Origin": "*",
+  })
+);
 
 app.get("/", (req, res) => {
   res.status(200).send("Backend Running.");
